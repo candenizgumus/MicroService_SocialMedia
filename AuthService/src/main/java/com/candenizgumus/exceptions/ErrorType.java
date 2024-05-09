@@ -9,16 +9,16 @@ import org.springframework.http.HttpStatus;
 public enum ErrorType
 {
 
-    USERNAME_OR_PASSWORD_WRONG(5002, "Kullanıcı adı veya parola yanlış.", HttpStatus.I_AM_A_TEAPOT),
-    USERNAME_ALREADY_TAKEN(2000, "Bu kullanıcı adı zaten alınmış. Lütfen tekrar deneyin.", HttpStatus.BAD_REQUEST),
-    BAD_REQUEST_ERROR(1001, "Girilen parametreler hatalıdır. Lütfen düzeltiniz.", HttpStatus.BAD_REQUEST),
-    MUSTERI_NOT_FOUND(5004, "Böyle bir müşteri bulunamadı.", HttpStatus.NOT_FOUND),
-    PASSWORDS_ARE_NOT_SAME(5003,"Sifreler ayni degil", HttpStatus.BAD_REQUEST),
-    EMAIL_TAKEN(5004,"Email daha önce alınmis", HttpStatus.NOT_FOUND),
-    INVALID_TOKEN(5005,"Token Geçersizdir" ,HttpStatus.BAD_REQUEST ),
-    TOKEN_CREATION_FAILED(5006,"Token yaratmada hata meydana geldi" ,HttpStatus.SERVICE_UNAVAILABLE ),
-    TOKEN_VERIFY_FAILED(5007,"Token verify edilemedi." ,HttpStatus.SERVICE_UNAVAILABLE ),
-    TOKEN_ARGUMENT_NOTVALID(5008,"Token argümanı yanlış formatta" ,HttpStatus.BAD_REQUEST );
+    USERNAME_OR_PASSWORD_WRONG(1001, "Kullanıcı adı veya parola yanlış.", HttpStatus.I_AM_A_TEAPOT),
+    USERNAME_ALREADY_TAKEN(1002, "Bu kullanıcı adı zaten alınmış. Lütfen tekrar deneyin.", HttpStatus.BAD_REQUEST),
+    BAD_REQUEST_ERROR(1003, "Girilen parametreler hatalıdır. Lütfen düzeltiniz.", HttpStatus.BAD_REQUEST),
+    MUSTERI_NOT_FOUND(1004, "Böyle bir müşteri bulunamadı.", HttpStatus.NOT_FOUND),
+    PASSWORDS_ARE_NOT_SAME(1005,"Sifreler ayni degil", HttpStatus.BAD_REQUEST),
+    EMAIL_TAKEN(1006,"Email daha önce alınmis", HttpStatus.NOT_FOUND),
+    INVALID_TOKEN(1007,"Token Geçersizdir" ,HttpStatus.BAD_REQUEST ),
+    TOKEN_CREATION_FAILED(1008,"Token yaratmada hata meydana geldi" ,HttpStatus.SERVICE_UNAVAILABLE ),
+    TOKEN_VERIFY_FAILED(1009,"Token verify edilemedi." ,HttpStatus.SERVICE_UNAVAILABLE ),
+    TOKEN_ARGUMENT_NOTVALID(1010,"Token argümanı yanlış formatta" ,HttpStatus.BAD_REQUEST );
     private Integer code;
     private String message;
     private HttpStatus httpStatus;

@@ -28,8 +28,7 @@ public class Auth extends BaseEntity
     String password;
     String email;
     @Enumerated(EnumType.STRING)
-    @Builder.Default
-    Role role = Role.USER;
+    Role role;
     @Builder.Default
     String activationCode = UUID.randomUUID().toString();
     @Enumerated(EnumType.STRING)

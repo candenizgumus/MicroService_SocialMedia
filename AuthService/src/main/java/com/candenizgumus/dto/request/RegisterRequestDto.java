@@ -1,5 +1,6 @@
 package com.candenizgumus.dto.request;
 
+import com.candenizgumus.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,4 +19,5 @@ public class RegisterRequestDto
     String password;
     @Email
     String email;
+    Role role;
 }
