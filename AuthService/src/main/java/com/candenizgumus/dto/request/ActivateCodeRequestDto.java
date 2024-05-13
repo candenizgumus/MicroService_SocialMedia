@@ -1,6 +1,5 @@
 package com.candenizgumus.dto.request;
 
-import com.candenizgumus.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class LoginRequestDto
+public class ActivateCodeRequestDto
 {
-    String username;
-    String password;
-
-
+    Long id;
+    String activationCode;
 }

@@ -4,7 +4,7 @@ public class EndPoints
 {
 
 
-    public static final String AUTH = "/auth";
+    public static final String USERPROFILE = "/userprofile";
 
 
 

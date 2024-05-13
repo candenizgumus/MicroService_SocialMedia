@@ -23,8 +23,8 @@ public class GlobalExceptionHandler
     }
 
 
-    @ExceptionHandler(AuthServiceException.class)
-    public ResponseEntity<ErrorMessage> handleDemoException(AuthServiceException ex)
+    @ExceptionHandler(UserServiceException.class)
+    public ResponseEntity<ErrorMessage> handleDemoException(UserServiceException ex)
     {
         ErrorType errorType = ex.getErrorType();
         return new ResponseEntity(createErrorMessage(ex,

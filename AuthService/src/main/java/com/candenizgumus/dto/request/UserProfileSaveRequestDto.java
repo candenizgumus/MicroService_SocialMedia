@@ -1,6 +1,5 @@
 package com.candenizgumus.dto.request;
 
-import com.candenizgumus.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class LoginRequestDto
+public class UserProfileSaveRequestDto
 {
+    Long authId;
     String username;
-    String password;
-
-
+    String email;
+    String phone;
+    String photo;
+    String address;
+    String about;
 }

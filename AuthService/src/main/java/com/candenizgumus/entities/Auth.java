@@ -29,11 +29,10 @@ public class Auth extends BaseEntity
     String email;
     @Enumerated(EnumType.STRING)
     Role role;
-    @Builder.Default
-    String activationCode = UUID.randomUUID().toString();
+    String activationCode;
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    Status status = Status.ACTIVE;
+    Status status = Status.PENDING;
 
 
 

@@ -6,12 +6,16 @@ ext {
             openapi         : "2.5.0",
             mapstruct       : "1.5.5.Final",
             jwt             : "4.4.0",
-            validator       :"8.0.1.Final"
+            validator       :"8.0.1.Final",
+            springCloud     : "4.1.1"
     ]
 
     libs=[
             springBootWeb        :"org.springframework.boot:spring-boot-starter-web:$versions.springBoot",
             springBotDataJpa     :"org.springframework.boot:spring-boot-starter-data-jpa:$versions.springBoot",
+            springBotDataMongo   :"org.springframework.boot:spring-boot-starter-data-mongodb:$versions.springBoot",
+            springCloudOpenFeign :"org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
+
             validator            :"org.hibernate.validator:hibernate-validator:$versions.validator",
             lombok               :"org.projectlombok:lombok:$versions.lombok",
             openapi              :"org.springdoc:springdoc-openapi-starter-webmvc-ui:$versions.openapi",

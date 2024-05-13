@@ -1,3 +1,4 @@
 rootProject.name = 'JAVA14_22_SocialMedia'
 include 'AuthService'
+include 'UserService'
 
