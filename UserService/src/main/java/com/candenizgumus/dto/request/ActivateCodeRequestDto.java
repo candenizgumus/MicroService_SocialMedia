@@ -1,20 +1,16 @@
-package com.candenizgumus.dto.response;
+package com.candenizgumus.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class RegisterResponseDto
+public class ActivateCodeRequestDto
 {
-    String username;
+    Long id;
     String activationCode;
-    LocalDateTime createAt;
-    Boolean state;
 }

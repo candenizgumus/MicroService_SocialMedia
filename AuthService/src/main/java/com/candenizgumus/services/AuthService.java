@@ -3,6 +3,7 @@ package com.candenizgumus.services;
 import com.candenizgumus.dto.request.LoginRequestDto;
 import com.candenizgumus.dto.request.RegisterRequestDto;
 import com.candenizgumus.dto.request.UserProfileSaveRequestDto;
+import com.candenizgumus.dto.request.UserProfileUpdateRequest;
 import com.candenizgumus.dto.response.RegisterResponseDto;
 import com.candenizgumus.entities.Auth;
 import com.candenizgumus.enums.Role;
@@ -95,6 +96,7 @@ public class AuthService
 
     }
 
+    @Transactional
     public String activateAuth(Long authId, String activationCode)
     {
         Auth auth = authRepository.findById(authId).orElseThrow(() -> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
@@ -110,6 +112,8 @@ public class AuthService
 
         auth.setStatus(Status.ACTIVE);
         authRepository.save(auth);
+
+        userProfileManager.activateUser(authId);
         return "Aktivasyon başarılı sisteme girebilirsiniz.";
 
     }
@@ -119,6 +123,8 @@ public class AuthService
         Auth auth = authRepository.findById(authId).orElseThrow(() -> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
         auth.setStatus(Status.DELETED);
         authRepository.save(auth);
+
+        userProfileManager.delete(authId);
         return auth.getId()+"'li kullanıcı silindi.";
     }
 
@@ -148,5 +154,29 @@ public class AuthService
     public Long getIdFromToken(String token)
     {
         return jwtTokenManager.getIdFromToken(token).get();
+    }
+
+
+    @Transactional
+    public String updateUserProfile(UserProfileUpdateRequest dto)
+    {
+        Optional<Long> authId = jwtTokenManager.getIdFromToken(dto.getToken());
+        userProfileManager.update(dto);
+        Optional<Auth> auth = authRepository.findById(authId.get());
+
+        if (dto.getEmail()!= null)
+        {
+            auth.get().setEmail(dto.getEmail());
+        }
+        if (dto.getStatus() != null)
+        {
+            auth.get().setStatus(dto.getStatus());
+        }
+
+
+
+        authRepository.save(auth.get());
+
+        return auth.get().getUsername()+ " adlı authun bilgileri güncellendi.";
     }
 }

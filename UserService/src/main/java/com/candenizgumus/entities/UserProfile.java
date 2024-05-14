@@ -24,5 +24,6 @@ public class UserProfile
     String photo;
     String address;
     String about;
-    Status status; //TODO SONRA BAKILACAK ANOTASYONUNA
+    @Builder.Default
+    Status status = Status.PENDING; //TODO SONRA BAKILACAK ANOTASYONUNA
 }

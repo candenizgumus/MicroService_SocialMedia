@@ -10,3 +10,16 @@
 8. Registerda validation kullanılmalı
 9. Exceptionları uygun şekilde kullanalım.
 10. JWT token mekanizmasını da kullanmalıyız. Login olan kullanıcıya token dönmeliyiz.
+
+## Todo List 3 14.05.2024
+
+1. NoSql ve Sql Farkı ?
+2. NoSql db tipleri nelerdir  ? ve altındaki databaseler neler olabilir ? 
+3. CAP teoremi nedir ?
+4. ACID nedir ?
+5. AuthService de register olduktan sonra activasyon işlemleri yapılırken bu işlem UserProfile tarafına da yansıtılmalı. (openfeign) . UserProfile tarafında endpointte pathvariable ile authid alabilirsiniz. UserService kapalı veya bir nedenden işlem gerçekleşemezse authservice de de bu işlem geriye alınmalı.
+6. Login olduktan sonra dönen token ile beraber UserProfile'ını güncelleyebilmeli.
+7. Ama burada sadece username değiştirememeli. Onun dışındaki alanlar değişmeli. Örnek olarak: email bilgisini değiştirirse auth'da da değişmeli.
+8. Update ederken eğer bir değer verilmiyorsa, eski değerler kalsın.
+9. Authdaki silme UserProfile tarafına yansıtacak bir mekanizma geliştirin.
+

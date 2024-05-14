@@ -41,9 +41,6 @@ public class JwtTokenManager
             token = JWT.create()
                     .withAudience()
                     .withClaim("id", id)
-                    .withClaim("whichpage", "AuthMicroService")
-                    .withClaim("ders", "Java JWT")
-                    .withClaim("grup", "Java14")
                     .withIssuer(issuer)
                     .withIssuedAt(new Date()) //Tokenın yaratıldığı an.
                     .withExpiresAt(new Date(System.currentTimeMillis() + expireTime)) //Date, Instant
@@ -76,9 +73,6 @@ public class JwtTokenManager
                     .withAudience()
                     .withClaim("id", id)
                     .withClaim("role", role.toString())
-                    .withClaim("whichpage", "AuthMicroService")
-                    .withClaim("ders", "Java JWT")
-                    .withClaim("grup", "Java14")
                     .withIssuer(issuer)
                     .withIssuedAt(new Date()) //Tokenın yaratıldığı an.
                     .withExpiresAt(new Date(System.currentTimeMillis() + expireTime)) //Date, Instant

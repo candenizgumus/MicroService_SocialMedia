@@ -1,12 +1,16 @@
 package com.candenizgumus.manager;
 
+import com.candenizgumus.dto.request.ActivateCodeRequestDto;
 import com.candenizgumus.dto.request.UserProfileSaveRequestDto;
+import com.candenizgumus.dto.request.UserProfileUpdateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static com.candenizgumus.constants.EndPoints.SAVE;
+import static com.candenizgumus.constants.EndPoints.*;
 
 /**
  * Microserviceler arasında iletişimi RestApi üzerinden sağlamak için kullanılacak interface'dir.
@@ -23,4 +27,12 @@ public interface UserProfileManager
     @PostMapping(SAVE)
     ResponseEntity<Void> save(@RequestBody UserProfileSaveRequestDto dto);
 
+    @PutMapping(ACTIVATION)
+    ResponseEntity<String> activateUser(@RequestBody Long authId);
+
+    @PutMapping(UPDATE)
+    ResponseEntity<String> update( @RequestBody UserProfileUpdateRequest dto);
+
+    @DeleteMapping(DELETE)
+    ResponseEntity<String> delete( @RequestBody  Long authId);
 }

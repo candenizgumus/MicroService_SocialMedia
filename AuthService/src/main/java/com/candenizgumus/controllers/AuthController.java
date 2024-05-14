@@ -5,6 +5,7 @@ import static com.candenizgumus.constants.EndPoints.*;
 import com.candenizgumus.dto.request.ActivateCodeRequestDto;
 import com.candenizgumus.dto.request.LoginRequestDto;
 import com.candenizgumus.dto.request.RegisterRequestDto;
+import com.candenizgumus.dto.request.UserProfileUpdateRequest;
 import com.candenizgumus.dto.response.LoginResponseDto;
 import com.candenizgumus.dto.response.RegisterResponseDto;
 import com.candenizgumus.entities.Auth;
@@ -82,7 +83,10 @@ public class AuthController
         return ResponseEntity.ok(authService.activateAuth(dto.getId(), dto.getActivationCode()));
     }
 
-
+    @PutMapping(UPDATE)
+    public ResponseEntity<String> updateUserProfile(@RequestBody UserProfileUpdateRequest dto){
+        return ResponseEntity.ok(authService.updateUserProfile(dto));
+    }
 
     @DeleteMapping(DELETE+"/{id}")
     public ResponseEntity<String> delete( @PathVariable("id") Long authId){
