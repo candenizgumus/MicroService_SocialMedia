@@ -34,5 +34,5 @@ public interface UserProfileManager
     ResponseEntity<String> update( @RequestBody UserProfileUpdateRequest dto);
 
     @DeleteMapping(DELETE)
-    ResponseEntity<String> delete( @RequestBody  Long authId);
+    ResponseEntity<String> delete( @RequestBody  Long authId  );
 }

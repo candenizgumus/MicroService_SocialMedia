@@ -51,3 +51,19 @@ ACID özellikleri, veri bütünlüğünü korurken, işlemlerin güvenli ve tuta
 8. Update ederken eğer bir değer verilmiyorsa, eski değerler kalsın.
 9. Authdaki silme UserProfile tarafına yansıtacak bir mekanizma geliştirin.
 
+
+## Todo List 4 15.05.2024
+1. @RestController ile @Controller farkı ?
+2. Spring Boot Uygulaması ayağa kalkarken neler oluyor ?
+3. RestApi yazarken nelere dikkat edilmeli ?
+4. Richardson Maturity Model nedir ?
+5. @SpringBootApplication anotasyonlu sınıfı spring package içine alırsam proje içine alırsam proje çalışır mı ?
+6. SistemeConfigServer Dahil Ediniz (Local ve Git(ayrı bir repo oluşturarak))
+7. Bütün microserviceler yml dosyalarını bu configserverdan çekecek şekilde ayarlanmalıdır.
+8. git config-server'daki bir yml'daki değişiklikten servisin haberdar olması için neler yapılabilir ?
+
+* Webhook Kullanma: Git deposundaki değişikliklerin anında algılanması için webhook'lar kullanabilirsiniz. Webhook'lar, Git deposundaki herhangi bir değişiklik olduğunda belirli bir URL'ye bir HTTP isteği gönderir. Bu URL, Spring Boot servisinizin dinlediği ve gelen değişiklikleri işleyebileceği bir endpoint olabilir. Spring Boot servisiniz bu isteği alır almaz, yeni yapılandırma dosyalarını Git reposundan çekebilir ve uygulamayı yeniden başlatarak değişiklikleri yansıtabilir.
+
+* Scheduled Task (Zamanlanmış Görev): Belirli aralıklarla (örneğin, her 5 dakikada bir) yapılandırma dosyalarını kontrol etmek için bir zamanlanmış görev (scheduled task) oluşturabilirsiniz. Bu görev, Git deposundaki yapılandırma dosyalarını düzenli olarak kontrol eder ve değişiklik tespit ederse uygulamayı yeniden başlatır.
+
+* Spring Cloud Bus Kullanma: Spring Cloud Config ile birlikte Spring Cloud Bus'u kullanarak dağişiklikleri servislere iletebilirsiniz. Spring Cloud Bus, mikro servisler arasında mesaj iletişimi sağlayan bir kütüphanedir. Yapılandırma dosyalarındaki değişiklikler olduğunda, Spring Cloud Bus bu değişiklikleri alır ve servislere iletir. Servisler bu değişiklikleri alır almaz, yeni yapılandırma dosyalarını çeker ve uygulamayı yeniden başlatır.

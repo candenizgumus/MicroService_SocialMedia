@@ -11,11 +11,13 @@ ext {
     ]
 
     libs=[
-            springBootWeb        :"org.springframework.boot:spring-boot-starter-web:$versions.springBoot",
-            springBotDataJpa     :"org.springframework.boot:spring-boot-starter-data-jpa:$versions.springBoot",
-            springBotDataMongo   :"org.springframework.boot:spring-boot-starter-data-mongodb:$versions.springBoot",
-            springCloudOpenFeign :"org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
-
+            springBootWeb                       :"org.springframework.boot:spring-boot-starter-web:$versions.springBoot",
+            springBotDataJpa                    :"org.springframework.boot:spring-boot-starter-data-jpa:$versions.springBoot",
+            springBotDataMongo                  :"org.springframework.boot:spring-boot-starter-data-mongodb:$versions.springBoot",
+            springCloudOpenFeign                :"org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
+            springCloudConfig                   :"org.springframework.cloud:spring-cloud-starter-config:$versions.springCloud",
+            springCloudServer                   :"org.springframework.cloud:spring-cloud-config-server:$versions.springCloud",
+            springCloudClient                   :"org.springframework.cloud:spring-cloud-config-client:$versions.springCloud",
             validator            :"org.hibernate.validator:hibernate-validator:$versions.validator",
             lombok               :"org.projectlombok:lombok:$versions.lombok",
             openapi              :"org.springdoc:springdoc-openapi-starter-webmvc-ui:$versions.openapi",

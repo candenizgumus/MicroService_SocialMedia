@@ -2,4 +2,5 @@ dependencies {
     implementation libs.springBotDataJpa
     runtimeOnly libs.postgresql
     implementation libs.springCloudOpenFeign
+    implementation libs.springCloudClient
 }
