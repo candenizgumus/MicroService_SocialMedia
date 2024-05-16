@@ -1,14 +1,15 @@
 package com.candenizgumus.manager;
 
 import com.candenizgumus.dto.request.PostTweetRequestDto;
+import com.candenizgumus.dto.request.UpdatePostTweetRequestDto;
 import com.candenizgumus.dto.request.UserProfileSaveRequestDto;
 import com.candenizgumus.dto.request.UserProfileUpdateRequest;
+import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.candenizgumus.constants.EndPoints.*;
 
@@ -25,5 +26,14 @@ public interface PostManager
 {
     @PostMapping(SAVE)
     ResponseEntity<String> postTweet(@RequestBody PostTweetRequestDto dto);
+
+    @GetMapping(GETMYTWEETS+"/{authId}")
+    List<String> getMyTweets(@PathVariable Long authId);
+
+    @GetMapping("/getalltweets")
+    List<GetAllTweetsResponseDto> getAllTweetsResponseDto();
+
+    @PutMapping("updatetweet")
+    String updateTweet(@RequestBody UpdatePostTweetRequestDto dto);
 
 }

@@ -13,5 +13,6 @@ public class PostTweetRequestDto
 {
     String token;
     String content;
+    String username;
 
 }

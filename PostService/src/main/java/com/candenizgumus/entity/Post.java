@@ -19,6 +19,7 @@ public class Post
     @MongoId
     String id;
     Long authId;
+    String username;
     String context;
     @Builder.Default
     LocalDateTime localDateTime = LocalDateTime.now();

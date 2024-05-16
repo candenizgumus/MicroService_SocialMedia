@@ -1,4 +1,4 @@
-package com.candenizgumus.dto.request;
+package com.candenizgumus.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class PostTweetRequestDto
+public class GetMyTweetsResponseDto
 {
-    String token;
-    String content;
     String username;
-
 }

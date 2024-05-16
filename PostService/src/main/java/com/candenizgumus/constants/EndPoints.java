@@ -5,6 +5,7 @@ public class EndPoints
 
 
     public static final String POST = "/post";
+    public static final String GETMYTWEETS = "/getmytweets";
 
 
 

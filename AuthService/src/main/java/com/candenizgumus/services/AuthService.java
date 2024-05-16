@@ -1,6 +1,7 @@
 package com.candenizgumus.services;
 
 import com.candenizgumus.dto.request.*;
+import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
 import com.candenizgumus.dto.response.RegisterResponseDto;
 import com.candenizgumus.entities.Auth;
 import com.candenizgumus.enums.Role;
@@ -14,6 +15,7 @@ import com.candenizgumus.repositories.AuthRepository;
 import com.candenizgumus.utility.CodeGenerator;
 import com.candenizgumus.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -182,8 +184,27 @@ public class AuthService
     public String postTweet(PostTweetRequestDto dto)
     {
         Long authId = jwtTokenManager.getIdFromToken(dto.getToken()).orElseThrow(()-> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
+        Optional<Auth> auth = authRepository.findById(authId);
+        dto.setUsername(auth.get().getUsername());
         postManager.postTweet(dto);
 
         return "Post işlemi başarılı";
+    }
+
+    public List<String> getMyTweets(Long authId)
+    {
+
+        return postManager.getMyTweets(authId);
+    }
+
+    public List<GetAllTweetsResponseDto> getAllTweets()
+    {
+
+        return postManager.getAllTweetsResponseDto();
+    }
+
+    public String updateTweet(UpdatePostTweetRequestDto dto)
+    {
+        return postManager.updateTweet(dto);
     }
 }

@@ -1,6 +1,7 @@
 package com.candenizgumus.controllers;
 
 import com.candenizgumus.dto.request.*;
+import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
 import com.candenizgumus.dto.response.RegisterResponseDto;
 import com.candenizgumus.entities.Auth;
 import com.candenizgumus.enums.Role;
@@ -95,4 +96,24 @@ public class AuthController
         return ResponseEntity.ok(authService.postTweet(dto));
 
     }
+
+    @GetMapping(GETMYTWEETS+"/{authId}")
+    public ResponseEntity<List<String>> getMyTweets(@PathVariable Long authId){
+
+        return ResponseEntity.ok(authService.getMyTweets(authId));
+
+    }
+
+    @GetMapping("getalltweets")
+    public ResponseEntity<List<GetAllTweetsResponseDto>> getAllTweets(){
+        return ResponseEntity.ok(authService.getAllTweets());
+    }
+
+    @PutMapping("/updatetweet")
+    public ResponseEntity<String> updateTweet(@RequestBody UpdatePostTweetRequestDto dto){
+        return ResponseEntity.ok(authService.updateTweet(dto));
+
+    }
+
+
 }

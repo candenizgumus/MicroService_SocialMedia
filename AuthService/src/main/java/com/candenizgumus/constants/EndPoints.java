@@ -23,4 +23,5 @@ public class EndPoints
     public static final String LOGIN = "/login";
     public static final String ACTIVATION    = "/activation";
     public static final String GETROLE = "/getrole";
+    public static final String GETMYTWEETS = "/getmytweets";
 }
