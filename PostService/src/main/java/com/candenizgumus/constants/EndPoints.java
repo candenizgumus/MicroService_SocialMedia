@@ -4,8 +4,7 @@ public class EndPoints
 {
 
 
-    public static final String AUTH = "/auth";
-    public static final String POSTTWEET = "/posttweet";
+    public static final String POST = "/post";
 
 
 

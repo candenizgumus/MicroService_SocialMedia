@@ -1,5 +1,7 @@
 package com.candenizgumus.controllers;
 
+import static com.candenizgumus.constants.EndPoints.*;
+
 import com.candenizgumus.dto.request.*;
 import com.candenizgumus.dto.response.RegisterResponseDto;
 import com.candenizgumus.entities.Auth;
@@ -11,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.candenizgumus.constants.EndPoints.*;
-
 
 @RestController
 @RequestMapping(AUTH)

@@ -121,8 +121,9 @@ ACID özellikleri, veri bütünlüğünü korurken, işlemlerin güvenli ve tuta
   uygun veri formatının kullanılması önemlidir.
 
 4. Richardson Maturity Model nedir ?
-    * Seviye 0: Durumsuz Protokol: HTTP protokolü kullanılsa da, RPC benzeri bir yapı söz konusudur ve tek bir URI
-      üzerinden tüm işlemler gerçekleştirilir.
+
+* Seviye 0: Durumsuz Protokol: HTTP protokolü kullanılsa da, RPC benzeri bir yapı söz konusudur ve tek bir URI
+  üzerinden tüm işlemler gerçekleştirilir.
 
 * Seviye 1: Kaynaklar: API, kaynakları tekil URI'lerle temsil eder ve HTTP metotlarını kullanarak bu kaynaklar üzerinde
   işlem yapılır.
@@ -155,3 +156,11 @@ ise ideal olanıdır.
   iletebilirsiniz. Spring Cloud Bus, mikro servisler arasında mesaj iletişimi sağlayan bir kütüphanedir. Yapılandırma
   dosyalarındaki değişiklikler olduğunda, Spring Cloud Bus bu değişiklikleri alır ve servislere iletir. Servisler bu
   değişiklikleri alır almaz, yeni yapılandırma dosyalarını çeker ve uygulamayı yeniden başlatır.
+
+## Todo List 5 16.05.2024
+1. PostService yazınız. Bir user login olduktan sonra postservice aracılığı ile post atabilmelidir.
+2. User Kendi attığı postları listeleyebilmeli.
+3. User atılan tüm postları da görebileceği bir endpointi olmalı.
+3. User kendi attığı postu güncelleyebilmeli.
+4. Database i siz belirleyin. (Mongo veya PostgreSql)
+5. - Optional: ApiGateway ekleyebilirsiniz.
