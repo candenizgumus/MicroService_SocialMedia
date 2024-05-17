@@ -90,30 +90,7 @@ public class AuthController
         return ResponseEntity.ok(authService.delete(authId));
     }
 
-    @PostMapping(POSTTWEET)
-    public ResponseEntity<String> postTweet(@RequestBody PostTweetRequestDto dto){
 
-        return ResponseEntity.ok(authService.postTweet(dto));
-
-    }
-
-    @GetMapping(GETMYTWEETS+"/{authId}")
-    public ResponseEntity<List<String>> getMyTweets(@PathVariable Long authId){
-
-        return ResponseEntity.ok(authService.getMyTweets(authId));
-
-    }
-
-    @GetMapping("getalltweets")
-    public ResponseEntity<List<GetAllTweetsResponseDto>> getAllTweets(){
-        return ResponseEntity.ok(authService.getAllTweets());
-    }
-
-    @PutMapping("/updatetweet")
-    public ResponseEntity<String> updateTweet(@RequestBody UpdatePostTweetRequestDto dto){
-        return ResponseEntity.ok(authService.updateTweet(dto));
-
-    }
 
 
 }

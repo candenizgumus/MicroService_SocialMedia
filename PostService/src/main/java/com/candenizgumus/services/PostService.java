@@ -1,5 +1,6 @@
 package com.candenizgumus.services;
 
+import com.candenizgumus.config.model.UserProfileModel;
 import com.candenizgumus.dto.request.PostTweetRequestDto;
 import com.candenizgumus.dto.request.UpdatePostTweetRequestDto;
 import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
@@ -9,6 +10,7 @@ import com.candenizgumus.exceptions.PostServiceException;
 import com.candenizgumus.repositories.PostRepository;
 import com.candenizgumus.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,15 +23,21 @@ public class PostService
 {
     private final PostRepository postRepository;
     private final JwtTokenManager jwtTokenManager;
+    private final RabbitTemplate rabbitTemplate;
 
     public String save(PostTweetRequestDto dto)
     {
-        Optional<Long> authId = jwtTokenManager.getIdFromToken(dto.getToken());
+        Long authId = jwtTokenManager.getIdFromToken(dto.getToken()).orElseThrow(()-> new PostServiceException(ErrorType.AUTH_NOT_FOUND));
+
+        UserProfileModel userProfileModel = (UserProfileModel) (rabbitTemplate.convertSendAndReceive("exchange.direct","Routing.existByAuthId",UserProfileModel.builder().authId(authId).build()));
+
+
+
         postRepository.save(Post
                 .builder()
                         .context(dto.getContent())
-                        .username(dto.getUsername())
-                        .authId(authId.get())
+                        .username(userProfileModel.getUsername())
+                        .authId(userProfileModel.getAuthId())
                 .build());
         return "Post işlemi başarılı.";
     }

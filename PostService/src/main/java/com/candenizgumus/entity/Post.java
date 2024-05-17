@@ -21,6 +21,7 @@ public class Post
     Long authId;
     String username;
     String context;
+
     @Builder.Default
     LocalDateTime localDateTime = LocalDateTime.now();
     @Builder.Default

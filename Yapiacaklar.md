@@ -161,6 +161,30 @@ ise ideal olanıdır.
 1. PostService yazınız. Bir user login olduktan sonra postservice aracılığı ile post atabilmelidir.
 2. User Kendi attığı postları listeleyebilmeli.
 3. User atılan tüm postları da görebileceği bir endpointi olmalı.
-3. User kendi attığı postu güncelleyebilmeli.
-4. Database i siz belirleyin. (Mongo veya PostgreSql)
-5. - Optional: ApiGateway ekleyebilirsiniz.
+4. User kendi attığı postu güncelleyebilmeli.
+5. Database i siz belirleyin. (Mongo veya PostgreSql)
+6. - Optional: ApiGateway ekleyebilirsiniz.
+
+
+## Todo List 6 17.05.2024
+1. Kullanıcı post atarken tokenla atmalıdır. (Önce user login olacak, oradan aldığınız token bilgisini post atarken ekleyeceksiniz.)
+2. Diğer user'a özel tüm endpointlerde aynı şekilde token değerini de yollayıp, kontrol ederek işlem yaptırmalısınız.
+3. Postun createAt,updateAt,status gibi fieldları olmalıdır. BaseEntityden alınabilir.
+4. Database olarak Mongo kullanılmadıysa mongo kullanılmalıdır.
+5. RabbitMq'yi de projemize dahil edelim.
+6. AuthService'den register olunca UserService'e openFeignle attığımız isteği rabbit ile yapalım. Bunun için registerWithRabbit adlı yeni bir metod ekleyelim. Diğeri de dursun.
+7. DirectExchange kullanabilirsiniz.
+8. Exchange,Queue,RouteKey bu isimlerini alırken yml dosyasında kendi yazdığınız key-valuelardan çekin.
+9. Bİr tane de queue oluşturunuz.
+10. Yani auth producer olmalı, user da consumer olmalı.
+11. Dönüşüm için messageConverter eklenebilir RabbitTemplate için.
+12. Bu işlem dışında ayrıca rabbitMQ kullanarak hesabı aktive ediniz. Onun için de ayrı bir kuyruk oluşturmalısınız. Daha önce openFeign kullanmıştık. onu gizleyebilirsiniz. Bu işlemde de DirectExchange kullanabilirsiniz.
+13. Araştırma Soruları:
+- JWT (JSON Web Token) nedir ve nasıl çalışır? Token oluşturma ve doğrulama süreçlerini açıklayınız.
+- JWT ile OAuth2 arasındaki farklar nelerdir? Hangi durumlarda JWT, hangi durumlarda OAuth2 kullanmalısınız?
+- RabbitMQ nedir ve temel bileşenleri nelerdir?
+- RabbitTemplate nedir ve nasıl kullanılır?
+- @RabbitListener anotasyonu ne yapmak için kullanılmaktadır?
+- Mesaj dönüşümü (message conversion) nedir ve RabbitMQ'da nasıl uygulanır?
+- MongoDB nedir ve SQL tabanlı veritabanlarından farkları nelerdir? MongoDB'nin temel bileşenlerini açıklayınız (koleksiyon, doküman vs..)
+- https://www.cloudamqp.com/blog/part1-rabbitmq-for-beginners-what-is-rabbitmq.html

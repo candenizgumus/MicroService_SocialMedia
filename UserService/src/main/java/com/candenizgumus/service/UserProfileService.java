@@ -1,5 +1,6 @@
 package com.candenizgumus.service;
 
+import com.candenizgumus.config.model.UserProfileModel;
 import com.candenizgumus.dto.request.UserProfileSaveRequestDto;
 import com.candenizgumus.dto.request.UserProfileUpdateRequest;
 import com.candenizgumus.entities.UserProfile;
@@ -10,6 +11,7 @@ import com.candenizgumus.mapper.UserProfileMapper;
 import com.candenizgumus.repository.UserProfileRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,7 +26,7 @@ public class UserProfileService
     public UserProfile save(UserProfileSaveRequestDto dto)
     {
         UserProfile userProfile = UserProfileMapper.INSTANCE.dtoToUserProfile(dto);
-        return userProfileRepository.save(userProfile   );
+        return userProfileRepository.save(userProfile);
     }
 
     public String activateUser(Long authId)
@@ -42,31 +44,31 @@ public class UserProfileService
 
     }
 
-    public String update( UserProfileUpdateRequest dto)
+    public String update(UserProfileUpdateRequest dto)
     {
 
         UserProfile user = userProfileRepository.findByAuthId(dto.getAuthId()).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
 
-        if(dto.getPhone() != null)
-        user.setPhone(dto.getPhone());
+        if (dto.getPhone() != null)
+            user.setPhone(dto.getPhone());
 
-        if(dto.getAbout() != null)
-        user.setAbout(dto.getAbout());
+        if (dto.getAbout() != null)
+            user.setAbout(dto.getAbout());
 
-        if(dto.getPhoto() != null)
-        user.setPhoto(dto.getPhoto());
+        if (dto.getPhoto() != null)
+            user.setPhoto(dto.getPhoto());
 
-        if(dto.getEmail() != null)
-        user.setEmail(dto.getEmail());
+        if (dto.getEmail() != null)
+            user.setEmail(dto.getEmail());
 
-        if(dto.getAddress() != null)
-        user.setAddress(dto.getAddress());
+        if (dto.getAddress() != null)
+            user.setAddress(dto.getAddress());
 
-        if(dto.getStatus() !=null)
-        user.setStatus(dto.getStatus());
+        if (dto.getStatus() != null)
+            user.setStatus(dto.getStatus());
 
         userProfileRepository.save(user);
-        return user.getUsername()+ "Usernameli user update edildi.";
+        return user.getUsername() + "Usernameli user update edildi.";
 
     }
 
@@ -79,5 +81,23 @@ public class UserProfileService
         return "User Silindi";
 
 
+    }
+
+    @RabbitListener(queues = "existByAuthId")
+    public UserProfileModel existByAuthId(UserProfileModel userProfileModel)
+    {
+        System.out.println(userProfileModel);
+        UserProfile userProfile = userProfileRepository.findByAuthId(userProfileModel.getAuthId()).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
+        UserProfileModel userProfileModel1 = UserProfileModel.builder()
+                .authId(userProfile.getAuthId())
+                .status(userProfile.getStatus().toString())
+                .photo(userProfile.getPhoto())
+                .about(userProfile.getAbout())
+                .username(userProfile.getUsername())
+                .email(userProfile.getEmail())
+                .address(userProfile.getAddress())
+                .build();
+
+        return userProfileModel1;
     }
 }

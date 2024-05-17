@@ -1,4 +1,4 @@
-package com.candenizgumus.dto.request;
+package com.candenizgumus.config.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class UserProfileSaveRequestDto
+public class UserProfileModel
 {
     Long authId;
     String username;
@@ -18,4 +18,5 @@ public class UserProfileSaveRequestDto
     String photo;
     String address;
     String about;
+    String status;
 }

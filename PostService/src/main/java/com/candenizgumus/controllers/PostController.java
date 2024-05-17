@@ -6,6 +6,7 @@ import com.candenizgumus.dto.request.UpdatePostTweetRequestDto;
 import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
 import com.candenizgumus.services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class PostController
 {
 
     private final PostService postService;
+
 
     @PostMapping(SAVE)
     public ResponseEntity<String> postTweet(@RequestBody PostTweetRequestDto dto){

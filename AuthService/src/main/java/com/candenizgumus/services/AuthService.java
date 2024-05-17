@@ -8,14 +8,12 @@ import com.candenizgumus.enums.Role;
 import com.candenizgumus.enums.Status;
 import com.candenizgumus.exceptions.AuthServiceException;
 import com.candenizgumus.exceptions.ErrorType;
-import com.candenizgumus.manager.PostManager;
 import com.candenizgumus.manager.UserProfileManager;
 import com.candenizgumus.mapper.AuthMapper;
 import com.candenizgumus.repositories.AuthRepository;
 import com.candenizgumus.utility.CodeGenerator;
 import com.candenizgumus.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +28,7 @@ public class AuthService
 
     private final JwtTokenManager jwtTokenManager;
     private final UserProfileManager userProfileManager;
-    private final PostManager postManager;
+
 
     @Transactional
     public RegisterResponseDto save(RegisterRequestDto dto)
@@ -181,30 +179,5 @@ public class AuthService
         return auth.get().getUsername()+ " adlı authun bilgileri güncellendi.";
     }
 
-    public String postTweet(PostTweetRequestDto dto)
-    {
-        Long authId = jwtTokenManager.getIdFromToken(dto.getToken()).orElseThrow(()-> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
-        Optional<Auth> auth = authRepository.findById(authId);
-        dto.setUsername(auth.get().getUsername());
-        postManager.postTweet(dto);
 
-        return "Post işlemi başarılı";
-    }
-
-    public List<String> getMyTweets(Long authId)
-    {
-
-        return postManager.getMyTweets(authId);
-    }
-
-    public List<GetAllTweetsResponseDto> getAllTweets()
-    {
-
-        return postManager.getAllTweetsResponseDto();
-    }
-
-    public String updateTweet(UpdatePostTweetRequestDto dto)
-    {
-        return postManager.updateTweet(dto);
-    }
 }
