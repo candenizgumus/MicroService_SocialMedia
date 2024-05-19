@@ -1,8 +1,6 @@
 package com.candenizgumus.services;
 
-import com.candenizgumus.config.AuthIdModel;
 import com.candenizgumus.dto.request.*;
-import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
 import com.candenizgumus.dto.response.RegisterResponseDto;
 import com.candenizgumus.entities.Auth;
 import com.candenizgumus.enums.Role;
@@ -135,8 +133,8 @@ public class AuthService
 
         auth.setStatus(Status.ACTIVE);
         authRepository.save(auth);
-        AuthIdModel model = AuthIdModel.builder().authId(authId).build();
-        rabbitTemplate.convertAndSend("exchange.direct","Routing.activate",model);
+
+        rabbitTemplate.convertAndSend("exchange.direct","Routing.activate",authId);
         return "Aktivasyon başarılı sisteme girebilirsiniz.";
     }
 

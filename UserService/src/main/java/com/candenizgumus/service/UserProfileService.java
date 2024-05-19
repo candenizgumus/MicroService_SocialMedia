@@ -1,6 +1,5 @@
 package com.candenizgumus.service;
 
-import com.candenizgumus.config.model.AuthIdModel;
 import com.candenizgumus.config.model.UserProfileModel;
 import com.candenizgumus.dto.request.UserProfileSaveRequestDto;
 import com.candenizgumus.dto.request.UserProfileUpdateRequest;
@@ -53,9 +52,9 @@ public class UserProfileService
     }
 
     @RabbitListener(queues = "activate")
-    public void activateWithRabbit(AuthIdModel model)
+    public void activateWithRabbit(Long authId)
     {
-        UserProfile user = userProfileRepository.findByAuthId(model.getAuthId()).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
+        UserProfile user = userProfileRepository.findByAuthId(authId).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
         if (user.getStatus() != Status.PENDING)
         {
             throw new UserServiceException(ErrorType.ACCOUNT_STATUS_ERROR);
