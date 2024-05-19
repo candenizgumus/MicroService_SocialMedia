@@ -1,5 +1,6 @@
 package com.candenizgumus.service;
 
+import com.candenizgumus.config.model.AuthIdModel;
 import com.candenizgumus.config.model.UserProfileModel;
 import com.candenizgumus.dto.request.UserProfileSaveRequestDto;
 import com.candenizgumus.dto.request.UserProfileUpdateRequest;
@@ -29,6 +30,13 @@ public class UserProfileService
         return userProfileRepository.save(userProfile);
     }
 
+    @RabbitListener(queues = "register")
+    public void saveWithRabbit(UserProfileSaveRequestDto dto)
+    {
+        UserProfile userProfile = UserProfileMapper.INSTANCE.dtoToUserProfile(dto);
+        userProfileRepository.save(userProfile);
+    }
+
     public String activateUser(Long authId)
     {
         UserProfile user = userProfileRepository.findByAuthId(authId).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
@@ -41,6 +49,22 @@ public class UserProfileService
         user.setStatus(Status.ACTIVE);
         userProfileRepository.save(user);
         return "Aktivasyon başarılı sisteme girebilirsiniz.";
+
+    }
+
+    @RabbitListener(queues = "activate")
+    public void activateWithRabbit(AuthIdModel model)
+    {
+        UserProfile user = userProfileRepository.findByAuthId(model.getAuthId()).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
+        if (user.getStatus() != Status.PENDING)
+        {
+            throw new UserServiceException(ErrorType.ACCOUNT_STATUS_ERROR);
+        }
+
+
+        user.setStatus(Status.ACTIVE);
+        userProfileRepository.save(user);
+
 
     }
 

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -22,8 +24,13 @@ public class Post
     String username;
     String context;
 
+
+    @CreatedDate
+    LocalDateTime localDateTime;
+    @LastModifiedDate
+    LocalDateTime updateAt;
     @Builder.Default
-    LocalDateTime localDateTime = LocalDateTime.now();
+    Status status = Status.ACTIVE;
     @Builder.Default
     Integer likeCount = 0;
     @Builder.Default

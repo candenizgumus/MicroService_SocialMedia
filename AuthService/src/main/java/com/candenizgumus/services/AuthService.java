@@ -1,5 +1,6 @@
 package com.candenizgumus.services;
 
+import com.candenizgumus.config.AuthIdModel;
 import com.candenizgumus.dto.request.*;
 import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
 import com.candenizgumus.dto.response.RegisterResponseDto;
@@ -14,6 +15,7 @@ import com.candenizgumus.repositories.AuthRepository;
 import com.candenizgumus.utility.CodeGenerator;
 import com.candenizgumus.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,7 @@ public class AuthService
 
     private final JwtTokenManager jwtTokenManager;
     private final UserProfileManager userProfileManager;
+    private final RabbitTemplate rabbitTemplate;
 
 
     @Transactional
@@ -117,6 +120,26 @@ public class AuthService
 
     }
 
+    public String activateAuthWithRabbit(Long authId, String activationCode)
+    {
+        Auth auth = authRepository.findById(authId).orElseThrow(() -> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
+        if (auth.getStatus() != Status.PENDING)
+        {
+            throw new AuthServiceException(ErrorType.ACCOUNT_STATUS_ERROR);
+        }
+        if (!auth.getActivationCode().equals(activationCode))
+        {
+            throw new AuthServiceException(ErrorType.ACTIVATIONCODE_WRONG);
+
+        }
+
+        auth.setStatus(Status.ACTIVE);
+        authRepository.save(auth);
+        AuthIdModel model = AuthIdModel.builder().authId(authId).build();
+        rabbitTemplate.convertAndSend("exchange.direct","Routing.activate",model);
+        return "Aktivasyon başarılı sisteme girebilirsiniz.";
+    }
+
     public String delete(Long authId)
     {
         Auth auth = authRepository.findById(authId).orElseThrow(() -> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
@@ -177,6 +200,29 @@ public class AuthService
         authRepository.save(auth.get());
 
         return auth.get().getUsername()+ " adlı authun bilgileri güncellendi.";
+    }
+
+
+    public RegisterResponseDto saveWithRabbit(RegisterRequestDto dto)
+    {
+        if (authRepository.existsByUsername(dto.getUsername()))
+        {
+            throw new AuthServiceException(ErrorType.USERNAME_ALREADY_TAKEN);
+        }
+
+        Auth auth = AuthMapper.INSTANCE.registerRequestDtoToAuth(dto);
+        auth.setActivationCode(CodeGenerator.generateActivationCode());
+        Auth savedAuth = authRepository.save(auth);
+        RegisterResponseDto registerResponseDto = AuthMapper.INSTANCE.authToRegisterResponseDto(savedAuth);
+
+        UserProfileSaveRequestDto userProfileSaveRequestDto = UserProfileSaveRequestDto
+                .builder()
+                .username(savedAuth.getUsername())
+                .authId(savedAuth.getId())
+                .build();
+
+        rabbitTemplate.convertAndSend("exchange.direct","Routing.register",userProfileSaveRequestDto);
+        return registerResponseDto;
     }
 
 

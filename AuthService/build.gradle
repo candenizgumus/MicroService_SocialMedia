@@ -3,4 +3,5 @@ dependencies {
     runtimeOnly libs.postgresql
     implementation libs.springCloudOpenFeign
     implementation libs.springCloudClient
+    implementation libs.rabbitMQ
 }

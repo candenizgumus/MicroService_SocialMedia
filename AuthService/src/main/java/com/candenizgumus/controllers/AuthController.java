@@ -23,6 +23,7 @@ public class AuthController
 {
     private final AuthService authService;
 
+
     /**
      * Register işlemleri:
      */
@@ -31,6 +32,14 @@ public class AuthController
     {
         return ResponseEntity.ok(authService.save(dto));
     }
+
+    @PostMapping(REGISTER+"withrabbit")
+    public ResponseEntity<RegisterResponseDto> registerWithRabbit(@RequestBody @Valid RegisterRequestDto dto)
+    {
+        return ResponseEntity.ok(authService.saveWithRabbit(dto));
+    }
+
+
 
     /**
      * Login İşlemleri
@@ -78,6 +87,11 @@ public class AuthController
     @PutMapping(ACTIVATION)
     public ResponseEntity<String> activateUser(@RequestBody ActivateCodeRequestDto dto){
         return ResponseEntity.ok(authService.activateAuth(dto.getId(), dto.getActivationCode()));
+    }
+
+    @PutMapping(ACTIVATION+"withrabbit")
+    public ResponseEntity<String> activateUserWithRabbit(@RequestBody ActivateCodeRequestDto dto){
+        return ResponseEntity.ok(authService.activateAuthWithRabbit(dto.getId(), dto.getActivationCode()));
     }
 
     @PutMapping(UPDATE)
