@@ -109,7 +109,7 @@ public class UserProfileService
     @RabbitListener(queues = "existByAuthId")
     public UserProfileModel existByAuthId(UserProfileModel userProfileModel)
     {
-        System.out.println(userProfileModel);
+
         UserProfile userProfile = userProfileRepository.findByAuthId(userProfileModel.getAuthId()).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
         UserProfileModel userProfileModel1 = UserProfileModel.builder()
                 .authId(userProfile.getAuthId())
