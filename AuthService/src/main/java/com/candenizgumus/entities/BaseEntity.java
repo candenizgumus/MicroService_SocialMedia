@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -20,10 +21,10 @@ import java.time.LocalDateTime;
 public class BaseEntity {
 
 
-    @CreationTimestamp
-    private LocalDateTime createAt;
-    @UpdateTimestamp
-    private LocalDateTime updateAt;
+    @Builder.Default
+    private Long createAt = System.currentTimeMillis();
+    @Builder.Default
+    private Long updateAt = System.currentTimeMillis();
     @Builder.Default
     private Boolean state = true;
 

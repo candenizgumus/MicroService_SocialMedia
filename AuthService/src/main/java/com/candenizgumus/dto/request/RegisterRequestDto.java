@@ -1,6 +1,7 @@
 package com.candenizgumus.dto.request;
 
 import com.candenizgumus.enums.Role;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,9 @@ public class RegisterRequestDto
     @Email
     String email;
     Role role;
+
+    @PostConstruct
+    public void usernameToLowerCase(){
+        username = username.toLowerCase();
+    }
 }

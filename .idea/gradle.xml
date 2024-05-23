@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/AuthService2" />
             <option value="$PROJECT_DIR$/ConfigServer" />
             <option value="$PROJECT_DIR$/ConfigServerGit" />
+            <option value="$PROJECT_DIR$/EmailService" />
             <option value="$PROJECT_DIR$/PostService" />
             <option value="$PROJECT_DIR$/UserService" />
           </set>

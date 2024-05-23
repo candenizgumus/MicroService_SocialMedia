@@ -36,8 +36,12 @@ ext {
             mapstructProcessor   :"org.mapstruct:mapstruct-processor:$versions.mapstruct",
 
             rabbitMQ             :"org.springframework.boot:spring-boot-starter-amqp",
+            redis                :"org.springframework.boot:spring-boot-starter-data-redis",
+            jwt                  :"com.auth0:java-jwt:$versions.jwt",
 
-            jwt                  :"com.auth0:java-jwt:$versions.jwt"
+            jsr310               :"com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.4",
+
+
 
 
 

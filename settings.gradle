@@ -4,7 +4,6 @@ include 'UserService'
 include 'ConfigServer'
 include 'ConfigServerGit'
 include 'PostService'
-include 'AuthService2'
 include 'ApiGateway'
 include 'EmailService'
 

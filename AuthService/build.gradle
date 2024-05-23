@@ -4,4 +4,6 @@ dependencies {
     implementation libs.springCloudOpenFeign
     implementation libs.springCloudClient
     implementation libs.rabbitMQ
+    implementation libs.redis
+    implementation libs.jsr310
 }

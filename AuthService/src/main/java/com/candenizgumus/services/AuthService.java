@@ -13,8 +13,11 @@ import com.candenizgumus.mapper.AuthMapper;
 import com.candenizgumus.repositories.AuthRepository;
 import com.candenizgumus.utility.CodeGenerator;
 import com.candenizgumus.utility.JwtTokenManager;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,17 +35,23 @@ public class AuthService
     private final JwtTokenManager jwtTokenManager;
     private final UserProfileManager userProfileManager;
     private final RabbitTemplate rabbitTemplate;
+    private HashOperations<String, String, Auth> hashOperations;
+    private final RedisTemplate<String, Auth> redisTemplate;
+    private static final String KEY = "AuthList";
+
 
 
     @Transactional
     public RegisterResponseDto save(RegisterRequestDto dto)
     {
+        dto.setUsername(dto.getUsername().toLowerCase());
         if (authRepository.existsByUsername(dto.getUsername()))
         {
             throw new AuthServiceException(ErrorType.USERNAME_ALREADY_TAKEN);
         }
 
         Auth auth = AuthMapper.INSTANCE.registerRequestDtoToAuth(dto);
+
         auth.setActivationCode(CodeGenerator.generateActivationCode());
         Auth savedAuth = authRepository.save(auth);
         RegisterResponseDto registerResponseDto = AuthMapper.INSTANCE.authToRegisterResponseDto(savedAuth);
@@ -211,6 +220,7 @@ public class AuthService
 
     public RegisterResponseDto saveWithRabbit(RegisterRequestDto dto)
     {
+        dto.setUsername(dto.getUsername().toLowerCase());
         if (authRepository.existsByUsername(dto.getUsername()))
         {
             throw new AuthServiceException(ErrorType.USERNAME_ALREADY_TAKEN);
@@ -234,12 +244,15 @@ public class AuthService
 
     public RegisterResponseDto registerWithEmail(RegisterRequestDto dto)
     {
+        dto.setUsername(dto.getUsername().toLowerCase());
         if (authRepository.existsByUsername(dto.getUsername()))
         {
             throw new AuthServiceException(ErrorType.USERNAME_ALREADY_TAKEN);
         }
 
+
         Auth auth = AuthMapper.INSTANCE.registerRequestDtoToAuth(dto);
+
         auth.setActivationCode(CodeGenerator.generateActivationCode());
         Auth savedAuth = authRepository.save(auth);
         RegisterResponseDto registerResponseDto = AuthMapper.INSTANCE.authToRegisterResponseDto(savedAuth);
@@ -295,4 +308,42 @@ public class AuthService
             }
         }
     }
+
+    public Auth findById(String id)
+    {
+        //İlk önce aranan ürün id'si cache'de var mı kontrol edilir.
+        Auth auth = hashOperations.get(KEY, id);
+        if (auth == null)
+        {
+            Optional<Auth> optionalAuth = authRepository.findById(Long.valueOf((String)id));
+            //eğer ürün veritabanında bulunursa.
+            if (optionalAuth.isPresent())
+            {
+                //ürünü get ile alırız.
+                auth = optionalAuth.get();
+                //Ardından cache'e yazarız.
+                hashOperations.put(KEY, id, auth);
+            }
+        }
+
+        return auth;
+
+    }
+
+    @PostConstruct
+    private void init()
+    {
+        hashOperations = redisTemplate.opsForHash();
+    }
+
+  /*  @PostConstruct
+    private void init(){
+        if (!redisTemplate.hasKey(KEY) )
+        {
+            List<Auth> allProducts = authRepository.findAll();
+            allProducts.forEach(product -> {
+                redisTemplate.opsForList().rightPush(KEY,product);
+            });
+        }
+    }*/
 }

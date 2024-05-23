@@ -125,6 +125,11 @@ public class AuthController
         return ResponseEntity.ok(authService.delete(authId));
     }
 
+    @GetMapping(FINDBYID+"/{id}")
+    public ResponseEntity<Auth> findById(@PathVariable String id){
+        return ResponseEntity.ok(authService.findById(id));
+    }
+
 
 
 

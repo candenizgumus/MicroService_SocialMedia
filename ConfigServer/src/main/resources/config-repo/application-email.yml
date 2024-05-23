@@ -2,6 +2,11 @@ server:
   port: 9093
 
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
   mail:
     host: smtp.gmail.com
     port: 587
