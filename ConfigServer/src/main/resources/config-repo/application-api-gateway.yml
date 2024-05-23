@@ -7,9 +7,7 @@ spring:
   cloud:
     gateway:
       default-filters:
-        #http://localthost/auth/findbyid/1
-        # (?<segment>.*) -> auth/findbyid/1
-        # /$\{segment} -> http://localhost:9090/api/v1/auth/findbyid/1
+
         - RewritePath=/(?<segment>.*),/$\{segment}
       routes:
         - id: auth-service

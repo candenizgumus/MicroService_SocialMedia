@@ -1,0 +1,15 @@
+server:
+  port: 9093
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: denizgumus1996@gmail.com
+    password: zrrz chys sttt amcb
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

@@ -1,5 +1,6 @@
 package com.candenizgumus.services;
 
+import com.candenizgumus.config.model.SendEmailModel;
 import com.candenizgumus.dto.request.*;
 import com.candenizgumus.dto.response.RegisterResponseDto;
 import com.candenizgumus.entities.Auth;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -135,8 +138,13 @@ public class AuthService
         authRepository.save(auth);
 
         rabbitTemplate.convertAndSend("exchange.direct","Routing.activate",authId);
+
         return "Aktivasyon başarılı sisteme girebilirsiniz.";
     }
+
+
+
+
 
     public String delete(Long authId)
     {
@@ -224,4 +232,67 @@ public class AuthService
     }
 
 
+    public RegisterResponseDto registerWithEmail(RegisterRequestDto dto)
+    {
+        if (authRepository.existsByUsername(dto.getUsername()))
+        {
+            throw new AuthServiceException(ErrorType.USERNAME_ALREADY_TAKEN);
+        }
+
+        Auth auth = AuthMapper.INSTANCE.registerRequestDtoToAuth(dto);
+        auth.setActivationCode(CodeGenerator.generateActivationCode());
+        Auth savedAuth = authRepository.save(auth);
+        RegisterResponseDto registerResponseDto = AuthMapper.INSTANCE.authToRegisterResponseDto(savedAuth);
+
+        UserProfileSaveRequestDto userProfileSaveRequestDto = UserProfileSaveRequestDto
+                .builder()
+                .username(savedAuth.getUsername())
+                .authId(savedAuth.getId())
+                .build();
+
+        sendActivationCodeToEmail(SendEmailModel
+                .builder()
+                .to(dto.getEmail())
+                .from("denizgumus1996@gmail.com")
+                .subject("Activation Code")
+                .message(savedAuth.getActivationCode()+ " Please activate your code.")
+
+                .build());
+        return registerResponseDto;
+    }
+
+    private void sendActivationCodeToEmail(SendEmailModel dto){
+        rabbitTemplate.convertAndSend("exchange.direct","Routing.sendemail",dto);
+    }
+
+
+
+    public void passwordReset(String email)
+    {
+        Auth auth = authRepository.findByEmail(email).orElseThrow(() -> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
+        String emailResetCode = UUID.randomUUID().toString();
+        sendActivationCodeToEmail(SendEmailModel
+                .builder()
+                .to(email)
+                .from("denizgumus1996@gmail.com")
+                .subject("Activation Code")
+                .message("Your new email reset code: " + emailResetCode)
+                .build());
+
+        auth.setEmailResetCode(emailResetCode);
+        authRepository.save(auth);
+    }
+
+    public void changepasswordwithresetcode(EmailResetRequestDto dto)
+    {
+        List<Auth> authList = authRepository.findAll();
+        for (Auth auth : authList)
+        {
+            if (auth.getEmailResetCode().equals(dto.getEmailResetCode()))
+            {
+                auth.setPassword(dto.getNewPassword());
+                authRepository.save(auth);
+            }
+        }
+    }
 }

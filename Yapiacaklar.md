@@ -188,3 +188,25 @@ ise ideal olanıdır.
 - Mesaj dönüşümü (message conversion) nedir ve RabbitMQ'da nasıl uygulanır?
 - MongoDB nedir ve SQL tabanlı veritabanlarından farkları nelerdir? MongoDB'nin temel bileşenlerini açıklayınız (koleksiyon, doküman vs..)
 - https://www.cloudamqp.com/blog/part1-rabbitmq-for-beginners-what-is-rabbitmq.html
+
+
+## 22.05.2024 TODO List
+1. Spring ile mail gönderme işlemi nasıl yapılabilir ?
+2. Mail olarak lütfen gmail kullanınız.
+3. From: gönderen kısmıdır. Burada sizin adresiniz olmalı. (Kendi adresimizden.)
+4. To: kime. Mail göndereceğiniz adres.  (barisbilgebirisi@gmail.com)
+5. Subject: Konu Mailin konusu
+6. Message: Mail. İçerik burada olur.
+7. Oluşturacağınız end pointe yukarıda belirtilen alanlara değerler girilerek mail göndereiblmelidir.
+
+## Todo List 8 23.05.2024
+1. Social Media projemzideki aktivasyon kodunu user'ın email'ine gönderelim.
+2. Email Service adında ayrı bir service oluşturunuz.
+3. Şifremi unuttum? e-mail gir, kod üretip gönderebiliriz.
+4. o kod ile beraber, email , yeni şifresini girer ve kaydederiz. Eski şifre üzerine yazılır.
+
+5. findByUsername metodu ile username e göre veritabanında arama yapılmaktadır. Yapılan arama sonucunda user nesnesi geri dönen bu metodu cacheleyelim. (arama yapılırken büyük küçük harf önemsenmesin.) Bu maddenin doğru çalışması için veritabanında ali ve Ali diye 2 farklı kayıt açılmamalı.
+6. findByStatus metodu ile statuse göre userlar liste olarak dönmeli. Bunun da cachelenmesini istiyoruz. Birisi statusu guncellediğinde cachede de güncellenmeli. 
+7. Yeni bir user register olduğunda Pending durumunda oluyordu. Onun da Cache deki listeye eklenmesi gerekli.
+8. Bu 2 metod içinde gerekli kontrollerle gerekli hataları fırlatalım.
+9. findByStatus metodu içine olmayan bir status gelirse ne olacak ? Bunun için ilgili hatayı yakalayıp. globalExceptionHandler içine yeni bir metod ekleyerek handle etmelisiniz.

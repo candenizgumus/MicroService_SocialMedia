@@ -15,10 +15,14 @@ ext {
             springBootWeb                       :"org.springframework.boot:spring-boot-starter-web:$versions.springBoot",
             springBotDataJpa                    :"org.springframework.boot:spring-boot-starter-data-jpa:$versions.springBoot",
             springBotDataMongo                  :"org.springframework.boot:spring-boot-starter-data-mongodb:$versions.springBoot",
+            springEmail                         :"org.springframework.boot:spring-boot-starter-mail:$versions.springBoot",
+
             springCloudOpenFeign                :"org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
             springCloudConfig                   :"org.springframework.cloud:spring-cloud-starter-config:$versions.springCloud",
             springCloudServer                   :"org.springframework.cloud:spring-cloud-config-server:$versions.springCloud",
             springCloudClient                   :"org.springframework.cloud:spring-cloud-config-client:$versions.springCloud",
+
+
 
             springCloudGateway                  :"org.springframework.cloud:spring-cloud-starter-gateway:$versions.springCloud",
             springCloudCircuitBreaker           :"org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:$versions.circuitBreaker",
@@ -34,5 +38,8 @@ ext {
             rabbitMQ             :"org.springframework.boot:spring-boot-starter-amqp",
 
             jwt                  :"com.auth0:java-jwt:$versions.jwt"
+
+
+
     ]
 }

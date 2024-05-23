@@ -34,6 +34,9 @@ public class Auth extends BaseEntity
     @Builder.Default
     Status status = Status.PENDING;
 
+    String emailResetCode;
+
+
 
 
 }

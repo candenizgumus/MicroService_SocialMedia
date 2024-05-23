@@ -18,4 +18,6 @@ public interface AuthRepository extends JpaRepository<Auth,Long>
      * username ve password vt'da kayıtlı mı kontrolü yapar.
      */
     Optional<Auth> findByUsernameAndPassword(String username, String password);
+
+    Optional<Auth> findByEmail(String email);
 }

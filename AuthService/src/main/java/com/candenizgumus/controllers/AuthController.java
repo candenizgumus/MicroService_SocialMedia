@@ -39,6 +39,12 @@ public class AuthController
         return ResponseEntity.ok(authService.saveWithRabbit(dto));
     }
 
+    @PostMapping(REGISTER+"withemail")
+    public ResponseEntity<RegisterResponseDto> registerWithEmail(@RequestBody @Valid RegisterRequestDto dto)
+    {
+        return ResponseEntity.ok(authService.registerWithEmail(dto));
+    }
+
 
 
     /**
@@ -94,10 +100,25 @@ public class AuthController
         return ResponseEntity.ok(authService.activateAuthWithRabbit(dto.getId(), dto.getActivationCode()));
     }
 
+
     @PutMapping(UPDATE)
     public ResponseEntity<String> updateUserProfile(@RequestBody UserProfileUpdateRequest dto){
         return ResponseEntity.ok(authService.updateUserProfile(dto));
     }
+
+    @PutMapping("/passwordresetmail/{email}")
+    public ResponseEntity<Void> passwordReset(@PathVariable String email){
+        authService.passwordReset(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/changepasswordwithresetcode")
+    public ResponseEntity<Void> changepasswordwithresetcode(@RequestBody EmailResetRequestDto dto){
+        authService.changepasswordwithresetcode(dto);
+        return ResponseEntity.ok().build();
+    }
+
+
 
     @DeleteMapping(DELETE+"/{id}")
     public ResponseEntity<String> delete( @PathVariable("id") Long authId){
