@@ -10,10 +10,18 @@ import com.candenizgumus.exceptions.UserServiceException;
 import com.candenizgumus.mapper.UserProfileMapper;
 import com.candenizgumus.repository.UserProfileRepository;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +29,9 @@ import java.util.Optional;
 public class UserProfileService
 {
     private final UserProfileRepository userProfileRepository;
+    private HashOperations<String, String, UserProfile> hashOperations;
+    private final RedisTemplate<String, UserProfile> redisTemplate;
+    private static final String KEY = "UserList";
 
 
     public UserProfile save(UserProfileSaveRequestDto dto)
@@ -30,11 +41,14 @@ public class UserProfileService
     }
 
     @RabbitListener(queues = "register")
-    public void saveWithRabbit(UserProfileSaveRequestDto dto)
+    public UserProfile saveWithRabbit(UserProfileSaveRequestDto dto)
     {
         UserProfile userProfile = UserProfileMapper.INSTANCE.dtoToUserProfile(dto);
         userProfileRepository.save(userProfile);
+        redisTemplate.opsForHash().put("userprofiles", userProfile.getAbout(), userProfile);
+        return userProfile;
     }
+
 
     public String activateUser(Long authId)
     {
@@ -67,40 +81,40 @@ public class UserProfileService
 
     }
 
-    public String update(UserProfileUpdateRequest dto)
+
+    public void cacheUserProfile(UserProfile user)
     {
 
-        UserProfile user = userProfileRepository.findByAuthId(dto.getAuthId()).orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
+        redisTemplate.opsForHash().put("userprofiles", user.getUsername(), user);
+    }
 
-        if (dto.getPhone() != null)
-            user.setPhone(dto.getPhone());
+    public String update(UserProfileUpdateRequest dto)
+    {
+        UserProfile user = userProfileRepository.findByAuthId(dto.getAuthId())
+                .orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
 
-        if (dto.getAbout() != null)
-            user.setAbout(dto.getAbout());
-
-        if (dto.getPhoto() != null)
-            user.setPhoto(dto.getPhoto());
-
-        if (dto.getEmail() != null)
-            user.setEmail(dto.getEmail());
-
-        if (dto.getAddress() != null)
-            user.setAddress(dto.getAddress());
-
-        if (dto.getStatus() != null)
-            user.setStatus(dto.getStatus());
+        if (dto.getPhone() != null) user.setPhone(dto.getPhone());
+        if (dto.getAbout() != null) user.setAbout(dto.getAbout());
+        if (dto.getPhoto() != null) user.setPhoto(dto.getPhoto());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
+        if (dto.getAddress() != null) user.setAddress(dto.getAddress());
+        if (dto.getStatus() != null) user.setStatus(dto.getStatus());
 
         userProfileRepository.save(user);
-        return user.getUsername() + "Usernameli user update edildi.";
+        // Cache'i güncelle
+        cacheUserProfile(user);
 
+
+        return user.getUsername() + " Usernameli user update edildi.";
     }
+
 
     public String delete(Long authId)
     {
         Optional<UserProfile> user = userProfileRepository.findByAuthId(authId);
         user.get().setStatus(Status.DELETED);
         userProfileRepository.save(user.get());
-
+        redisTemplate.opsForHash().put("userprofiles", user.get().getUsername(), user.get());
         return "User Silindi";
 
 
@@ -122,5 +136,31 @@ public class UserProfileService
                 .build();
 
         return userProfileModel1;
+    }
+
+    public UserProfile findByUsername(String username)
+    {
+        UserProfile userProfile = (UserProfile) redisTemplate.opsForHash().get("userprofiles", username);
+        if (userProfile == null)
+        {
+            userProfile = userProfileRepository.findByUsernameIgnoreCase(username).orElseThrow(() -> new UserServiceException(ErrorType.USER_NOT_FOUND));
+            redisTemplate.opsForHash().put("userprofiles", username, userProfile);
+
+        }
+        return userProfile;
+
+    }
+
+
+    public List<UserProfile> findAllByStatus(Status status)
+    {
+        //redisTemplate.opsForList().
+        return userProfileRepository.findAllByStatus(status);
+    }
+
+    @PostConstruct
+    private void init()
+    {
+        hashOperations = redisTemplate.opsForHash();
     }
 }

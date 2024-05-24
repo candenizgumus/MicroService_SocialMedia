@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ApiGateway" />
             <option value="$PROJECT_DIR$/AuthService" />
-            <option value="$PROJECT_DIR$/AuthService2" />
             <option value="$PROJECT_DIR$/ConfigServer" />
             <option value="$PROJECT_DIR$/ConfigServerGit" />
             <option value="$PROJECT_DIR$/EmailService" />

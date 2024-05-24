@@ -237,7 +237,7 @@ public class AuthService
                 .authId(savedAuth.getId())
                 .build();
 
-        rabbitTemplate.convertAndSend("exchange.direct","Routing.register",userProfileSaveRequestDto);
+        rabbitTemplate.convertSendAndReceive("exchange.direct", "Routing.register", userProfileSaveRequestDto);
         return registerResponseDto;
     }
 

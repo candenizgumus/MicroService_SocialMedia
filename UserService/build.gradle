@@ -2,4 +2,6 @@ dependencies {
     implementation libs.springBotDataMongo
     implementation libs.springCloudClient
     implementation libs.rabbitMQ
+    implementation libs.redis
+    implementation libs.jsr310
 }
