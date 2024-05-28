@@ -1,8 +1,7 @@
 package com.candenizgumus.services;
 
 import com.candenizgumus.config.model.UserProfileModel;
-import com.candenizgumus.dto.request.PostTweetRequestDto;
-import com.candenizgumus.dto.request.UpdatePostTweetRequestDto;
+import com.candenizgumus.dto.request.*;
 import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
 import com.candenizgumus.entity.Post;
 import com.candenizgumus.exceptions.ErrorType;
@@ -11,6 +10,7 @@ import com.candenizgumus.repositories.PostRepository;
 import com.candenizgumus.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,15 +32,25 @@ public class PostService
         UserProfileModel userProfileModel = (UserProfileModel) (rabbitTemplate.convertSendAndReceive("exchange.direct","Routing.existByAuthId",UserProfileModel.builder().authId(authId).build()));
 
 
-
         postRepository.save(Post
                 .builder()
                         .context(dto.getContent())
                         .username(userProfileModel.getUsername())
                         .authId(userProfileModel.getAuthId())
                 .build());
+
+        // Elastic'e kaydetme.
+        rabbitTemplate.convertAndSend("exchange.direct","Routing.savepost",Post
+                .builder()
+                .context(dto.getContent())
+                .username(userProfileModel.getUsername())
+                .authId(userProfileModel.getAuthId())
+                .build());
+
         return "Post işlemi başarılı.";
     }
+
+
 
     public List<String> getMyTweets(Long authId)
     {
@@ -67,15 +77,37 @@ public class PostService
 
     public String updateTweet(UpdatePostTweetRequestDto dto)
     {
+        Post post = null;
         if (postRepository.existsByAuthIdAndId(dto.getAuthId(), dto.getTweetId()))
         {
-            Post post = postRepository.findById(dto.getTweetId()).orElseThrow(()-> new PostServiceException(ErrorType.POST_NOT_FOUND));
+            post = postRepository.findById(dto.getTweetId()).orElseThrow(()-> new PostServiceException(ErrorType.POST_NOT_FOUND));
             post.setContext(dto.getNewContext());
             postRepository.save(post);
+            rabbitTemplate.convertAndSend("exchange.direct","Routing.savepost",post);
             return "Güncelleme işlemi başarılı  ";
         }
+
+
 
         return "Güncelleme hatası";
 
     }
+
+    public List<Post> findAll(){
+        return postRepository.findAll();
+    }
+
+
+    public void delete(ElasticPostDeleteRequest dto)
+    {
+        postRepository.deleteById(dto.id());
+        rabbitTemplate.convertAndSend("exchange.direct","Routing.deletepost",dto);
+
+    }
+
+    public Page<Post> sendFindAllByPageRequest(FindAllByPageRequestDto dto) {
+        Page<Post> posts = (Page<Post>) rabbitTemplate.convertSendAndReceive("exchange.direct", "Routing.findallbypage", dto);
+        return posts;
+    }
+
 }

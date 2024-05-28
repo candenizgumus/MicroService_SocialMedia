@@ -210,3 +210,10 @@ ise ideal olanıdır.
 7. Yeni bir user register olduğunda Pending durumunda oluyordu. Onun da Cache deki listeye eklenmesi gerekli.
 8. Bu 2 metod içinde gerekli kontrollerle gerekli hataları fırlatalım.
 9. findByStatus metodu içine olmayan bir status gelirse ne olacak ? Bunun için ilgili hatayı yakalayıp. globalExceptionHandler içine yeni bir metod ekleyerek handle etmelisiniz.
+
+## To do List 9 27.05.2024
+1. Elastic Service adında yeni bir microservice ekleyelim.
+2. Bu service ayağa kalktığında Postların tamamını elastice alalım.
+3. Post ekleme, silme, güncelleme işlemleri işlemi yapılırsa elastiğe de etkilesin. (Rabbit MQ)
+4. Elastic-service'den sonuçlar dönecek şekilde bazı arama endpointleri hazırlanabilir.
+5. PostContoller'daki findAllByToken adlı endpoint elasticten sonuç dönsün. Bu sonuç sayfalama işlemleri ile çalışsın.

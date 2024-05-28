@@ -6,4 +6,6 @@ include 'ConfigServerGit'
 include 'PostService'
 include 'ApiGateway'
 include 'EmailService'
+include 'ElasticService'
+
 

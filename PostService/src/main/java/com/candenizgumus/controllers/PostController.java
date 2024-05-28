@@ -1,12 +1,16 @@
 package com.candenizgumus.controllers;
 
 
+import com.candenizgumus.dto.request.ElasticPostDeleteRequest;
+import com.candenizgumus.dto.request.FindAllByPageRequestDto;
 import com.candenizgumus.dto.request.PostTweetRequestDto;
 import com.candenizgumus.dto.request.UpdatePostTweetRequestDto;
 import com.candenizgumus.dto.response.GetAllTweetsResponseDto;
+import com.candenizgumus.entity.Post;
 import com.candenizgumus.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +41,12 @@ public class PostController
 
     }
 
+    @DeleteMapping(DELETE)
+    public ResponseEntity<Void> delete(@RequestBody ElasticPostDeleteRequest dto){
+        postService.delete(dto);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/getalltweets")
     public List<GetAllTweetsResponseDto> getAllTweetsResponseDto(){
         return postService.getAllTweetsResponseDto();
@@ -47,6 +57,10 @@ public class PostController
         return postService.updateTweet(dto);
     }
 
+    @GetMapping("/findallbypage")
+    public Page<Post> sendFindAllByPageRequest(FindAllByPageRequestDto dto){
+        return (postService.sendFindAllByPageRequest(dto));
+    }
 
 
 }

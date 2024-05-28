@@ -16,7 +16,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -41,13 +40,16 @@ public class UserProfileService
     }
 
     @RabbitListener(queues = "register")
-    public UserProfile saveWithRabbit(UserProfileSaveRequestDto dto)
-    {
+    @CacheEvict(value = "userprofiles", allEntries = true)
+    @CachePut(value = "userprofiles", key = "#result.username")
+    public UserProfile saveWithRabbit(UserProfileSaveRequestDto dto) {
         UserProfile userProfile = UserProfileMapper.INSTANCE.dtoToUserProfile(dto);
         userProfileRepository.save(userProfile);
-        redisTemplate.opsForHash().put("userprofiles", userProfile.getAbout(), userProfile);
         return userProfile;
     }
+
+
+
 
 
     public String activateUser(Long authId)
@@ -82,14 +84,12 @@ public class UserProfileService
     }
 
 
-    public void cacheUserProfile(UserProfile user)
-    {
+    public void cacheUserProfile(UserProfile user) {
 
-        redisTemplate.opsForHash().put("userprofiles", user.getUsername(), user);
+        redisTemplate.opsForHash().put("userprofiles",user.getUsername(),user);
     }
 
-    public String update(UserProfileUpdateRequest dto)
-    {
+    public String update(UserProfileUpdateRequest dto) {
         UserProfile user = userProfileRepository.findByAuthId(dto.getAuthId())
                 .orElseThrow(() -> new UserServiceException(ErrorType.AUTH_NOT_FOUND));
 
@@ -105,16 +105,18 @@ public class UserProfileService
         cacheUserProfile(user);
 
 
+
+
         return user.getUsername() + " Usernameli user update edildi.";
     }
 
-
+    @CacheEvict(value = "userprofiles", allEntries = true)
     public String delete(Long authId)
     {
         Optional<UserProfile> user = userProfileRepository.findByAuthId(authId);
         user.get().setStatus(Status.DELETED);
         userProfileRepository.save(user.get());
-        redisTemplate.opsForHash().put("userprofiles", user.get().getUsername(), user.get());
+
         return "User Silindi";
 
 
@@ -137,24 +139,15 @@ public class UserProfileService
 
         return userProfileModel1;
     }
-
-    public UserProfile findByUsername(String username)
+    @Cacheable(value = "userprofiles" ,key = "#username")
+    public Optional<UserProfile> findByUsername(String username)
     {
-        UserProfile userProfile = (UserProfile) redisTemplate.opsForHash().get("userprofiles", username);
-        if (userProfile == null)
-        {
-            userProfile = userProfileRepository.findByUsernameIgnoreCase(username).orElseThrow(() -> new UserServiceException(ErrorType.USER_NOT_FOUND));
-            redisTemplate.opsForHash().put("userprofiles", username, userProfile);
-
-        }
-        return userProfile;
+       return userProfileRepository.findByUsernameIgnoreCase(username);
 
     }
 
-
-    public List<UserProfile> findAllByStatus(Status status)
-    {
-        //redisTemplate.opsForList().
+    @Cacheable(value = "userprofiles")
+    public List<UserProfile> findAllByStatus(Status status){
         return userProfileRepository.findAllByStatus(status);
     }
 

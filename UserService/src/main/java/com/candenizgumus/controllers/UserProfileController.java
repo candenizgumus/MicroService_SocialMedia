@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(USERPROFILE)
@@ -43,7 +44,7 @@ public class UserProfileController
     }
 
     @GetMapping("/findbyusername")
-    public ResponseEntity<UserProfile> findByUsername(String username){
+    public ResponseEntity<Optional<UserProfile>> findByUsername(String username){
         return ResponseEntity.ok(userProfileService.findByUsername(username));
     }
 
