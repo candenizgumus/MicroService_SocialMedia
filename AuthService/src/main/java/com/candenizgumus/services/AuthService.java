@@ -257,11 +257,6 @@ public class AuthService
         Auth savedAuth = authRepository.save(auth);
         RegisterResponseDto registerResponseDto = AuthMapper.INSTANCE.authToRegisterResponseDto(savedAuth);
 
-        UserProfileSaveRequestDto userProfileSaveRequestDto = UserProfileSaveRequestDto
-                .builder()
-                .username(savedAuth.getUsername())
-                .authId(savedAuth.getId())
-                .build();
 
         sendActivationCodeToEmail(SendEmailModel
                 .builder()

@@ -27,5 +27,5 @@ public class UserProfile implements Serializable
     String address;
     String about;
     @Builder.Default
-    Status status = Status.PENDING; //TODO SONRA BAKILACAK ANOTASYONUNA
+    Status status = Status.PENDING; 
 }
