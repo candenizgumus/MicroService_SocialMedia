@@ -140,9 +140,9 @@ public class UserProfileService
         return userProfileModel1;
     }
     @Cacheable(value = "userprofiles" ,key = "#username")
-    public Optional<UserProfile> findByUsername(String username)
+    public UserProfile findByUsername(String username)
     {
-       return userProfileRepository.findByUsernameIgnoreCase(username);
+       return userProfileRepository.findByUsernameIgnoreCase(username).orElseThrow(()-> new UserServiceException(ErrorType.USER_NOT_FOUND));
 
     }
 

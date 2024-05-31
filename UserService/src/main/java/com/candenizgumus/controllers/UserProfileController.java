@@ -44,7 +44,7 @@ public class UserProfileController
     }
 
     @GetMapping("/findbyusername")
-    public ResponseEntity<Optional<UserProfile>> findByUsername(String username){
+    public ResponseEntity<UserProfile> findByUsername(String username){
         return ResponseEntity.ok(userProfileService.findByUsername(username));
     }
 

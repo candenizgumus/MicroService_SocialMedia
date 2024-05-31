@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringEmailApplication
+public class EmailServiceApplication
 {
     public static void main(String[] args)
     {
-        SpringApplication.run(SpringEmailApplication.class);
+        SpringApplication.run(EmailServiceApplication.class);
     }
 }
