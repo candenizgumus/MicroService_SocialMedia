@@ -41,7 +41,6 @@ public class UserProfileService
 
     @RabbitListener(queues = "register")
     @CacheEvict(value = "userprofiles", allEntries = true)
-    @CachePut(value = "userprofiles", key = "#result.username")
     public UserProfile saveWithRabbit(UserProfileSaveRequestDto dto) {
         UserProfile userProfile = UserProfileMapper.INSTANCE.dtoToUserProfile(dto);
         userProfileRepository.save(userProfile);
@@ -150,6 +149,8 @@ public class UserProfileService
     public List<UserProfile> findAllByStatus(Status status){
         return userProfileRepository.findAllByStatus(status);
     }
+
+
 
     @PostConstruct
     private void init()

@@ -217,3 +217,12 @@ ise ideal olanıdır.
 3. Post ekleme, silme, güncelleme işlemleri işlemi yapılırsa elastiğe de etkilesin. (Rabbit MQ)
 4. Elastic-service'den sonuçlar dönecek şekilde bazı arama endpointleri hazırlanabilir.
 5. PostContoller'daki findAllByToken adlı endpoint elasticten sonuç dönsün. Bu sonuç sayfalama işlemleri ile çalışsın.
+
+## Todo List 10 05.06.2024
+1. Security 
+2. AuthService'de Register, RegisterWithRabbit ve Login, Activatecode, sifremiunuttum endpointleri herkesin kullanımına açık olmalı. Diğer endpointler authenticate olmayı istemeli
+3. JWTTokenFilter custom filter'ını olusturunuz.
+4. AuthControllerda findall endpointine rolü sadece USER olanlar istek atabilsin.
+4. AuthControllerda delete endpointine rolü sadece ADMIN olanlar istek atabilsin.
+5. UserController için de security koyalım.
+6. UserService'de swagger ve findall dışındaki tüm endpointlere istek kapatılsın. 

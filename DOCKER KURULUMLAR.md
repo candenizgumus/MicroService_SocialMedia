@@ -62,3 +62,12 @@ docker run -d --name java14-elasticsearch --net elasticnetwork -p 9200:9200 -p 9
 ```bash
 docker run -d --name java14-kibana --net elasticnetwork -p 5601:5601 kibana:8.11.1
 ```
+## Bir pod  içindeki logları görüntülemek için.
+```angular2html
+kubectl logs deployment-configservergit-57cf5f7f78-mnmbv
+```
+
+## Sürekli olışanb logları izlemek için.
+```angular2html
+kubectl logs -f deployment-configservergit-57cf5f7f78-mnmbv
+```

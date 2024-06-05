@@ -325,6 +325,10 @@ public class AuthService
 
     }
 
+    public Auth findById(Long id){
+        return authRepository.findById(id).orElseThrow(()-> new AuthServiceException(ErrorType.AUTH_NOT_FOUND));
+    }
+
     @PostConstruct
     private void init()
     {

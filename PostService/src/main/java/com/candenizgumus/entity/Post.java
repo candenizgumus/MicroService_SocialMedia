@@ -1,5 +1,6 @@
 package com.candenizgumus.entity;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +37,6 @@ public class Post
     Integer likeCount = 0;
     @Builder.Default
     Integer reTweetCount = 0;
+
 
 }

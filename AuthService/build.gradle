@@ -6,4 +6,5 @@ dependencies {
     implementation libs.rabbitMQ
     implementation libs.redis
     implementation libs.jsr310
+    implementation libs.springBootSecurity
 }

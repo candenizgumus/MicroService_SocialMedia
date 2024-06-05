@@ -10,7 +10,7 @@ spring:
   data:
     mongodb:
       host: localhost
-      port: 27027
+      port: 27017
       database: UserProfileDB
       username: bilge
       password: bilge!123

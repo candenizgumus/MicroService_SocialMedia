@@ -3,5 +3,6 @@
 dependencies {
     implementation libs.springBootElastic
     implementation libs.rabbitMQ
+    implementation libs.springCloudClient
 
 }

@@ -27,23 +27,8 @@ public class PostService
     private final PostRepository postRepository;
 
     @RabbitListener(queues = "elasticpostsave")
-    public void save(ElasticPostSaveRequest dto)
+    public void save(Post post)
     {
-        Post post = Post
-                .builder()
-                .id(dto.id())
-                .status(dto.status())
-                .username(dto.username())
-                .updateAt(dto.updateAt())
-                .likeCount(dto.likeCount())
-                .localDateTime(dto.localDateTime())
-                .reTweetCount(dto.reTweetCount())
-                .context(dto.context())
-                .authId(dto.authId())
-
-                .build();
-
-
         postRepository.save(post);
     }
 
