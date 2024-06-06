@@ -223,6 +223,17 @@ ise ideal olanıdır.
 2. AuthService'de Register, RegisterWithRabbit ve Login, Activatecode, sifremiunuttum endpointleri herkesin kullanımına açık olmalı. Diğer endpointler authenticate olmayı istemeli
 3. JWTTokenFilter custom filter'ını olusturunuz.
 4. AuthControllerda findall endpointine rolü sadece USER olanlar istek atabilsin.
-4. AuthControllerda delete endpointine rolü sadece ADMIN olanlar istek atabilsin.
-5. UserController için de security koyalım.
-6. UserService'de swagger ve findall dışındaki tüm endpointlere istek kapatılsın. 
+5. AuthControllerda delete endpointine rolü sadece ADMIN olanlar istek atabilsin.
+6. UserController için de security koyalım.
+7. UserService'de swagger ve findall dışındaki tüm endpointlere istek kapatılsın. 
+
+## To Do List 11 06.06.2024
+1. Google  cloudda bir cluster açalım.
+2. Local de social media projeniz tamamen çalışıyor mu
+3. Eğer çalışıyorsa bu proje için githubda yeni bir repo açalım. Config Server'ımız bu repodan yml dosyalarını alması gerekecek.
+4. Ardında bu repoya tüm yml dosyalarınız atabilirsiniz.
+5. Configservergit projenizi
+6. postgresql,rabbit,redis,mongo,elastic
+7. Ardından her birin e cluısterip ataması yapın
+8. Auth user email ve post service için dockerfile hazırlayıp jar dosyalarını oluşturduktan sonra dockerize edip, hubdockere push edelim.
+9. Bu servicelerin deploymentlarını yap ve cluster iplerini ata. 

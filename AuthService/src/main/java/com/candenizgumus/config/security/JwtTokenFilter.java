@@ -1,4 +1,3 @@
-/*
 package com.candenizgumus.config.security;
 
 import com.candenizgumus.exceptions.AuthServiceException;
@@ -48,4 +47,3 @@ public class JwtTokenFilter extends OncePerRequestFilter
         filterChain.doFilter(request,response);
     }
 }
-*/

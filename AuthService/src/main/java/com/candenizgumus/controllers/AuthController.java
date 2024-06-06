@@ -9,6 +9,7 @@ import com.candenizgumus.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -86,6 +87,7 @@ public class AuthController
     }
 
     @GetMapping(FINDALL)
+    @PreAuthorize("hasAnyAuthority('USER')")
     public ResponseEntity<List<Auth>> findAll(){
         return ResponseEntity.ok(authService.findAll());
     }
@@ -121,6 +123,7 @@ public class AuthController
 
 
     @DeleteMapping(DELETE+"/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<String> delete( @PathVariable("id") Long authId){
         return ResponseEntity.ok(authService.delete(authId));
     }
